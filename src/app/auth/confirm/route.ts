@@ -1,4 +1,5 @@
 import { type EmailOtpType } from '@supabase/supabase-js'
+import {useRouter} from "next/navigation";
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { createClient } from '@/utils/supabase/server'
@@ -25,6 +26,7 @@ export async function GET(request: NextRequest) {
     })
     if (!error) {
       redirectTo.searchParams.delete('next')
+
       return NextResponse.redirect(redirectTo)
     }
   }

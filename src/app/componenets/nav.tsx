@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   NavbarMenuToggle,
@@ -25,7 +25,6 @@ export function Nav() {
   const path = usePathname().split("/").slice(1);
 
   const [user, setUser] = useState<User | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -108,7 +107,7 @@ export function Nav() {
             <DropdownItem href="/about/faq" key="faq">
               FAQs
             </DropdownItem>
-            <DropdownItem href="/about/why" key="faq">
+            <DropdownItem href="/about/why" key="why">
               Why Us?
             </DropdownItem>
           </DropdownMenu>
@@ -131,12 +130,7 @@ export function Nav() {
         {!user && (
           <NavbarContent justify="end">
             <NavbarItem>
-              <Button
-                as={Link}
-                color="primary"
-                href="/api/auth/login"
-                variant="flat"
-              >
+              <Button as={Link} color="primary" href="/login" variant="flat">
                 Sign Up/Login
               </Button>
             </NavbarItem>
@@ -169,144 +163,17 @@ export function Nav() {
                 <DropdownItem key="help_and_feedback" href="/about/faq">
                   Help & Feedback
                 </DropdownItem>
-                <DropdownItem key="logout" color="danger" href="/">
+                <DropdownItem key="logout" color="danger" as="div">
                   <form action="/auth/signout" method="post">
-                    <button type="submit">Log Out</button>
+                    <button type="submit" className="w-full text-left">
+                      Log Out
+                    </button>
                   </form>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </NavbarContent>
         )}
-      </Navbar>
-      <Navbar
-        onMenuOpenChange={setIsMenuOpen}
-        isMenuOpen={isMenuOpen}
-        className="md:hidden"
-      >
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="md:hidden"
-        />
-        <NavbarMenu>
-          <NavbarMenuItem>
-            <ol>
-              About
-              <li className="indent-2">
-                <Link
-                  href="/about/rates"
-                  underline="always"
-                  onPress={() => setIsMenuOpen(false)}
-                >
-                  Rates
-                </Link>
-              </li>
-              <li className="indent-2">
-                <Link
-                  href="/about/mission"
-                  underline="always"
-                  onPress={() => setIsMenuOpen(false)}
-                >
-                  Mission
-                </Link>
-              </li>
-              <li className="indent-2">
-                <Link
-                  href="/about/faq"
-                  underline="always"
-                  onPress={() => setIsMenuOpen(false)}
-                >
-                  FAQs
-                </Link>
-              </li>
-              <li className="indent-2">
-                <Link
-                  href="/about/why"
-                  underline="always"
-                  onPress={() => setIsMenuOpen(false)}
-                >
-                  Why Us?
-                </Link>
-              </li>
-            </ol>
-          </NavbarMenuItem>
-
-          <NavbarMenuItem>
-            <Link
-              href="/tutors"
-              underline="always"
-              onPress={() => setIsMenuOpen(false)}
-            >
-              Tutors
-            </Link>
-          </NavbarMenuItem>
-
-          <NavbarMenuItem>
-            <Link
-              href="/book"
-              underline="always"
-              onPress={() => setIsMenuOpen(false)}
-            >
-              Appointments
-            </Link>
-          </NavbarMenuItem>
-        </NavbarMenu>
-        {!user && (
-          <NavbarContent justify="end">
-            <NavbarItem>
-              <Button
-                as={Link}
-                color="primary"
-                href="/api/auth/login"
-                variant="flat"
-              >
-                Sign Up/Login
-              </Button>
-            </NavbarItem>
-          </NavbarContent>
-        )}
-        {user && (
-          <NavbarContent as="div" justify="end">
-            <Dropdown placement="bottom-end">
-              <DropdownTrigger>
-                <Avatar
-                  isBordered
-                  as="button"
-                  aria-label="Avatar"
-                  className="transition-transform"
-                  color="primary"
-                  size="sm"
-                  src={
-                    "https://wvnpa.org/content/uploads/blank-profile-picture-973460_1280-768x768.png"
-                  }
-                />
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="profile" className="h-14 gap-2">
-                  <p className="font-semibold">Signed in as</p>
-                  <p className="font-semibold">{user.email}</p>
-                </DropdownItem>
-                <DropdownItem key="settings" href="/user">
-                  My Profile
-                </DropdownItem>
-                <DropdownItem key="cart" href="/book">
-                  Booking
-                </DropdownItem>
-
-                <DropdownItem key="help_and_feedback" href="/help">
-                  Help & Feedback
-                </DropdownItem>
-                <DropdownItem
-                  key="logout"
-                  color="danger"
-                  href="/api/auth/logout"
-                >
-                  Log Out
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </NavbarContent>
-        )}{" "}
       </Navbar>
     </div>
   );
